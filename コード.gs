@@ -6,7 +6,7 @@
 
 var ext = 8;
 var Cfg = {
-  sheetID : "log",
+  logName : "log",
   getSheetName_s : "組織データ",
   getSheetName_j : "人事データ",
   inputCol_s : 6,   //入力列　組織ツリー用(列番号)
