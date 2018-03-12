@@ -4,8 +4,9 @@
 @update : 2017/11/07 kawagoe 
 */
 
-var ext = 5;
+var ext = 8;
 var Cfg = {
+  sheetID : "log",
   getSheetName_s : "組織データ",
   getSheetName_j : "人事データ",
   inputCol_s : 6,   //入力列　組織ツリー用(列番号)
