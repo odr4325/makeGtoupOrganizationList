@@ -47,8 +47,8 @@ function log_(priority, message, flag) {
 
 function log_makesheet_() {
   var sheet_name = Cfg.logName;
-  var ss = SpreadsheetApp.openById(Cfg.sheetID);
-//  var ss = SpreadsheetApp.getActive();
+//  var ss = SpreadsheetApp.openById(Cfg.sheetID);
+  var ss = SpreadsheetApp.getActive();
   var sh = ss.getSheetByName(sheet_name);
   
   if (sh == null) {
