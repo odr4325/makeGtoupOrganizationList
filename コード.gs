@@ -16,13 +16,13 @@ var Cfg = {
   addressCol_s : 2,  //メンバーメールアドレス列（配列表記0から数えて)
   
   parentCol_j  : 3,  //親コード列　（配列表記0から数えて)
-  parentCnt_j  : ext,  //親コードチェック列数（５列分チェック）
+  parentCnt_j  : ext - 3,  //親コードチェック列数（先頭3列より後の配列分チェック）
   addressCol_j : 0,  //メンバーメールアドレス列（配列表記0から数えて)
   
   stRow_s : 3,
   enCol_s : 4,
   stRow_j : 2,
-  enCol_j : 3 + ext
+  enCol_j : ext
 };
 
 function onOpen(){
@@ -34,6 +34,8 @@ function onOpen(){
 }
 
 function fn_storesSosiki(){
+  var startTime = new Date();
+  LogSheet("INFO", Cfg.getSheetName_s + " : メンバー追加処理開始")
   try{
     var member = "";
     var sheetName_s = Cfg.getSheetName_s;
@@ -46,6 +48,7 @@ function fn_storesSosiki(){
     var enRow = ss.getLastRow() - Cfg.stRow_s + 1;
     if ( enRow < 1 ) {
       SpreadsheetApp.getActive().toast("データが見つかりません","ERROR",5);
+      LogSheet("ERROR","データが見つかりません");
       return;
     }
     var datas = ss.getRange(Cfg.stRow_s, 1, enRow, Cfg.enCol_s).getValues();
@@ -63,16 +66,24 @@ function fn_storesSosiki(){
           memberCnt++;
         }
       }//for j
+      //処理時間の計測
+      var nowTime = new Date();
+      var timeDiff = parseInt((nowTime.getTime() - startTime.getTime()) / (1000));
       Logger.log(Cfg.stRow_s + Number(i) + "行目(親組織), " + Cfg.inputCol_s + "メンバー[" + memberCnt + "], " + member);
+      LogSheet("INFO",Cfg.stRow_s + Number(i) + "行目(親組織), " + Cfg.inputCol_j + "| メンバー[" + memberCnt + "], " + member + " : " + timeDiff + " 秒 経過....");
       ss.getRange(Cfg.stRow_s + Number(i), Cfg.inputCol_s).setValue(member);
       member = ""
     } //for i
+    LogSheet("INFO", "処理終了")
   }catch(e){
     throw new Error( e.name + ", line:" + e.lineNumber + ", message:" + e.message );
+    LogSheet("ERROR", e.name + ", line:" + e.lineNumber + ", message:" + e.message);
   }
 }
 
 function fn_storesMember(){
+  var startTime = new Date();
+  LogSheet("INFO", Cfg.getSheetName_j + " / " + Cfg.getSheetName_s + " : メンバー追加処理開始")
   try{
     var member = "";
     var sheetName_s = Cfg.getSheetName_s;
@@ -90,7 +101,8 @@ function fn_storesMember(){
     
     var enRow = ss.getLastRow() - Cfg.stRow_s + 1;
     if ( enRow < 1 ) {
-      SpreadsheetApp.getActive().toast(sheetName_s + "データが見つかりません","ERROR",5);
+      SpreadsheetApp.getActive().toast(sheetName_s + " データが見つかりません","ERROR",5);
+      LogSheet("ERROR",sheetName_s + " データが見つかりません");
       return;
     }
     var datas = ss.getRange(Cfg.stRow_s, 1, enRow, Cfg.enCol_s).getValues();
@@ -98,6 +110,7 @@ function fn_storesMember(){
     var enRow = ss2.getLastRow() - Cfg.stRow_j + 1;
     if ( enRow < 1 ) {
       SpreadsheetApp.getActive().toast(sheetName_j + " データが見つかりません","ERROR",5);
+      LogSheet("ERROR",sheetName_j + " データが見つかりません");
       return;
     }
     var datas2 = ss2.getRange(Cfg.stRow_j, 1, enRow, Cfg.enCol_j).getValues();
@@ -120,11 +133,17 @@ function fn_storesMember(){
           }
         }//for j
       } //for col
+      //処理時間の計測
+      var nowTime = new Date();
+      var timeDiff = parseInt((nowTime.getTime() - startTime.getTime()) / (1000));
       Logger.log(Cfg.stRow_s + Number(i) + "行目(組織), " + Cfg.inputCol_j + "| メンバー[" + memberCnt + "], " + member);
+      LogSheet("INFO",Cfg.stRow_s + Number(i) + "行目(組織), " + Cfg.inputCol_j + "| メンバー[" + memberCnt + "], " + member + " : " + timeDiff + " 秒 経過....");
       ss.getRange(Cfg.stRow_s + Number(i), Cfg.inputCol_j).setValue(member);
       member = ""
     } //for i
+    LogSheet("INFO", "処理終了")
   }catch(e){
     throw new Error( e.name + ", line:" + e.lineNumber + ", message:" + e.message );
+    LogSheet("ERROR", e.name + ", line:" + e.lineNumber + ", message:" + e.message);
   }
 }
