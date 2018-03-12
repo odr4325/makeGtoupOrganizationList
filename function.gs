@@ -55,7 +55,8 @@ function log_makesheet_() {
     var active_sh = ss.getActiveSheet(); // memorize current active sheet;
     var sheet_num = ss.getSheets().length;
     sh = ss.insertSheet(sheet_name, sheet_num);
-    sh.getRange('A1:C1').setValues([['Timestamp', 'priority', 'Message']]).setBackground('#cfe2f3').setFontWeight('bold');
+//    sh.getRange('A1:C1').setValues([['Timestamp', 'priority', 'Message']]).setBackground('#cfe2f3').setFontWeight('bold');
+    sh.getRange('A1:C1').setValues([['Timestamp', 'priority', 'Message']]);
     sh.getRange('A2:C2').setValues([[Utilities.formatDate(new Date(), 'Asia/Tokyo', "yyyy/MM/dd HH:mm:ss.SSS"), 'INFO', sheet_name + ' has been created.']]).clearFormat();
 
     // .insertSheet()を呼ぶと"log"シートがアクティブになるので、元々アクティブだったシートにフォーカスを戻す

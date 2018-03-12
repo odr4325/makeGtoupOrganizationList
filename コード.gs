@@ -4,7 +4,7 @@
 @update : 2017/11/07 kawagoe 
 */
 
-var ext = 8;
+var ext = 5;
 var Cfg = {
   logName : "log",
   getSheetName_s : "組織データ",
@@ -36,7 +36,7 @@ function onOpen(){
 
 function fn_storesSosiki(){
   var startTime = new Date();
-  LogSheet("INFO", Cfg.getSheetName_s + " : メンバー追加処理開始")
+  LogSheet("INFO", Cfg.getSheetName_s + " : 組織追加処理開始")
   try{
     var member = "";
     var sheetName_s = Cfg.getSheetName_s;
@@ -71,10 +71,13 @@ function fn_storesSosiki(){
       var nowTime = new Date();
       var timeDiff = parseInt((nowTime.getTime() - startTime.getTime()) / (1000));
       Logger.log(Cfg.stRow_s + Number(i) + "行目(親組織), " + Cfg.inputCol_s + "メンバー[" + memberCnt + "], " + member);
-      LogSheet("INFO",Cfg.stRow_s + Number(i) + "行目(親組織), " + Cfg.inputCol_j + "| メンバー[" + memberCnt + "], " + member + " : " + timeDiff + " 秒 経過....");
+      if( (Number(i) % 50) == 0 ){
+        LogSheet("INFO",Number(i) + 1 + "行目(親組織), " + Cfg.inputCol_j + "| メンバー[" + memberCnt + "],  : " + timeDiff + " 秒 経過....");
+      }
       ss.getRange(Cfg.stRow_s + Number(i), Cfg.inputCol_s).setValue(member);
       member = ""
     } //for i
+    LogSheet("INFO",Number(i) + 1 + "行目(親組織), " + Cfg.inputCol_j + "| メンバー[" + memberCnt + "],  : " + timeDiff + " 秒 経過....");
     LogSheet("INFO", "処理終了")
   }catch(e){
     throw new Error( e.name + ", line:" + e.lineNumber + ", message:" + e.message );
@@ -138,10 +141,13 @@ function fn_storesMember(){
       var nowTime = new Date();
       var timeDiff = parseInt((nowTime.getTime() - startTime.getTime()) / (1000));
       Logger.log(Cfg.stRow_s + Number(i) + "行目(組織), " + Cfg.inputCol_j + "| メンバー[" + memberCnt + "], " + member);
-      LogSheet("INFO",Cfg.stRow_s + Number(i) + "行目(組織), " + Cfg.inputCol_j + "| メンバー[" + memberCnt + "], " + member + " : " + timeDiff + " 秒 経過....");
+      if( (Number(i) % 50) == 0 ){
+        LogSheet("INFO",Number(i) + 1 + "行目(組織), " + Cfg.inputCol_j + "| メンバー[" + memberCnt + "], : " + timeDiff + " 秒 経過....");
+      }
       ss.getRange(Cfg.stRow_s + Number(i), Cfg.inputCol_j).setValue(member);
       member = ""
     } //for i
+    LogSheet("INFO",Number(i) + 1 + "行目(組織), " + Cfg.inputCol_j + "| メンバー[" + memberCnt + "], : " + timeDiff + " 秒 経過....");
     LogSheet("INFO", "処理終了")
   }catch(e){
     throw new Error( e.name + ", line:" + e.lineNumber + ", message:" + e.message );
